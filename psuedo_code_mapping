@@ -1,0 +1,11 @@
+// The inputs to the KMedians algorithm
+data = input_stream
+k = number_of_clusters
+
+// Initialize the KMedians operator
+kmedians = initialize_kmedians(k)
+operator = KMedians(data, kmedians)
+
+// Register the operator with the SAM machine
+identifier = "kmedians"
+register_operator(identifier, operator)
