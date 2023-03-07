@@ -9,3 +9,12 @@ operator = KMedians(data, kmedians)
 // Register the operator with the SAM machine
 identifier = "kmedians"
 register_operator(identifier, operator)
+
+
+
+//
+This pseudo-code creates an instance of the KMedians operator, 
+which takes an input stream of data and the number of clusters (k) as inputs. 
+The initialize_kmedians function initializes the set of k medians for the KMedians algorithm.
+The operator is then registered with the SAM machine using the register_operator function. Once registered, 
+the operator can be used to perform KMedians clustering on input data.
