@@ -1,16 +1,5 @@
-Input:
-- field: the field to perform the k-medians operation on
-- k: the number of medians to calculate
-- memory: a HashMap containing metadata about the input stream
-
-Output:
-- C++ code implementing the K-medians operator for the SAM framework
-
-1. Parse the input expression to create a KMediansExp object with the given field and k value.
-2. Retrieve the current input and output stream names from the SAM framework's memory.
-3. Retrieve the tuple type of the input stream from the SAM framework's memory.
-4. Generate C++ code to create a KMedians object with the given k value and tuple type.
-5. Add register statements to connect the KMedians operator to the input and output streams.
-6. Return the generated C++ code as a string.
-
-The resulting C++ code can be executed by the SAM framework to perform the K-medians operation on the input stream data. The K-medians operator selects k medians from the input stream data and assigns each point in the stream to the closest median. It then updates the medians to be the median point of each cluster and repeats the process until the medians have converged to within a certain threshold.
+Parse SAL program using Scala parser
+For each KMedians operator expression in the program:
+  Initialize a KMediansExp object with the field and k values from the expression, and the SAM memory
+  Call the createOpString() method on the KMediansExp object to generate the SAM code for the operator
+  Add the SAM code to the overall SAM program string
