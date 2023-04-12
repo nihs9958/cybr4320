@@ -1,0 +1,48 @@
+Error I encountered
+
+[info] A k-medians operator
+[info] - must parse correctly with valid input *** FAILED ***
+[info]   java.util.NoSuchElementException: None.get
+[info]   at scala.None$.get(Option.scala:349)
+[info]   at scala.None$.get(Option.scala:347)
+[info]   at sal.parsing.sam.operators.KMediansExp.createOpString(K_median.scala:22)
+[info]   at KMediansSpec.$anonfun$new$1(K_median.scala:15)
+[info]   at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+[info]   at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+[info]   at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:22)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:20)
+[info]   at org.scalatest.FlatSpecLike$$anon$1.apply(FlatSpecLike.scala:1682)
+[info]   ...
+[info] - must fail to parse with invalid input
+[info] - must generate correct C++ code *** FAILED ***
+[info]   java.util.NoSuchElementException: None.get
+[info]   at scala.None$.get(Option.scala:349)
+[info]   at scala.None$.get(Option.scala:347)
+[info]   at sal.parsing.sam.operators.KMediansExp.createOpString(K_median.scala:22)
+[info]   at KMediansSpec.$anonfun$new$3(K_median.scala:33)
+[info]   at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+[info]   at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+[info]   at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:22)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:20)
+[info]   at org.scalatest.FlatSpecLike$$anon$1.apply(FlatSpecLike.scala:1682)
+[info]   ...
+[info] - must generate C++ code with the correct identifier *** FAILED ***
+[info]   java.util.NoSuchElementException: None.get
+[info]   at scala.None$.get(Option.scala:349)
+[info]   at scala.None$.get(Option.scala:347)
+[info]   at sal.parsing.sam.operators.KMediansExp.createOpString(K_median.scala:22)
+[info]   at KMediansSpec.$anonfun$new$4(K_median.scala:45)
+[info]   at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+[info]   at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+[info]   at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:22)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:20)
+[info]   at org.scalatest.FlatSpecLike$$anon$1.apply(FlatSpecLike.scala:1682)
+[info]   ...
+
+
+the error message suggests that there might be an issue with the memory map that is being used. Specifically, it seems that the map is missing some key that is being accessed with the .get() method, resulting in a NoSuchElementException.
+
+I don't know how to ensure that the necessary key-value pairs are being added to the memory map during parsing and that they are being accessed with the correct keys in the createOpString() method.
