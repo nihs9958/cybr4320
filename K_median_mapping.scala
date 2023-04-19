@@ -1,49 +1,62 @@
-package sal.parsing.sam.operators
-
-import scala.collection.mutable.HashMap
-import sal.parsing.sam.BaseParsing
+import org.scalatest.FlatSpec
+import sal.parsing.sam.operators.KMedians
 import sal.parsing.sam.Constants
-import sal.parsing.sam.Util
 
-trait KMedians extends BaseParsing {
-  val kMediansKeyWord: String = "kmedians"
+class KMediansSpec extends FlatSpec with KMedians {
+  "A k-medians operator" must "parse correctly with valid input" in {
+    val input = "kmedians(Stream1, 5)"
+    val expectedOutput = """|identifier = "Stream1";
+                            |auto Stream1 = std::make_shared<KMedians<>>(5);
+                            |addOperator(Stream1);
+                            |registerConsumer(Stream1, "Stream1");
+                            |if (subscriber != NULL) {
+                            |  producer->registerSubscriber(subscriber, Stream1);
+                            |}""".stripMargin
 
-  def kMediansOperator: Parser[KMediansExp] =
-    kMediansKeyWord ~ "(" ~ identifier ~ "," ~ int ~ ")" ^^
-      { case kmed ~ lpar ~ id ~ c1 ~ k ~ rpar =>
-        KMediansExp(id, k, memory)
-      }
-}
-
-case class KMediansExp(field: String, k: Int, memory: HashMap[String, String])
-    extends OperatorExp(field, memory) with Util {
-
-    override def createOpString(): String = {
-  val lstream = memory.getOrElse(Constants.CurrentLStream, "")
-  val rstream = memory.getOrElse(Constants.CurrentRStream, "")
-
-  // Get the tuple type of the input stream
-  val tupleType = memory.getOrElse(lstream + Constants.TupleType, "")
-  memory += Constants.TupleType -> tupleType
-
-  // Generate SAM code for the K-medians operator
-  val opString = s"""identifier = "$field";
-auto $field = std::make_shared<KMedians<$tupleType>>($k);
-${addRegisterStatements(field, rstream, memory)}""".replace("$tupleType", tupleType)
-
-  opString
-}
-
-
-  override def addRegisterStatements(identifier: String, rstream: String, memory: HashMap[String, String]): String = {
-    val producer = "producer" // Replace with the appropriate producer object
-    val subscriber = "subscriber" // Replace with the appropriate subscriber object
-
-    s"""addOperator($identifier);
-registerConsumer($identifier, "$identifier");
-if ($subscriber != NULL) {
-  $producer->registerSubscriber($subscriber, $identifier);
-}"""
+    val parsedResult = parseAll(kMediansOperator, input)
+    assert(parsedResult.successful)
+    assert(parsedResult.get.createOpString() == expectedOutput)
   }
 
+  it must "fail to parse with invalid input" in {
+    val input = "kmedians(Stream1, invalid)"
+    val parsedResult = parseAll(kMediansOperator, input)
+    assert(parsedResult.isInstanceOf[Failure])
+  }
+
+
+
+  
+  
+  it must "generate correct C++ code" in {
+  val input = "kmedians(Stream1, 5)"
+  val expectedOutput = """|identifier = "Stream1";
+                          |auto Stream1 = std::make_shared<KMedians<>>(5);
+                          |addOperator(Stream1);
+                          |registerConsumer(Stream1, "Stream1");
+                          |if (subscriber != NULL) {
+                          |  producer->registerSubscriber(subscriber, Stream1);
+                          |}""".stripMargin
+
+  val parsedResult = parseAll(kMediansOperator, input)
+  assert(parsedResult.successful)
+  assert(parsedResult.get.createOpString() == expectedOutput)
+}
+
+  
+  
+  it must "generate C++ code with the correct identifier" in {
+    val input = "kmedians(MyStream, 5)"
+    val expectedOutput = """|identifier = "MyStream";
+                            |auto MyStream = std::make_shared<KMedians<>>(5);
+                            |addOperator(MyStream);
+                            |registerConsumer(MyStream, "MyStream");
+                            |if (subscriber != NULL) {
+                            |  producer->registerSubscriber(subscriber, MyStream);
+                            |}""".stripMargin
+
+    val parsedResult = parseAll(kMediansOperator, input)
+    assert(parsedResult.successful)
+    assert(parsedResult.get.createOpString() == expectedOutput)
+  }
 }
